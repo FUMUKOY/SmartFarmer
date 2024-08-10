@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  streamlit:
+    build:
+      context: .                            #Path to the directory containing your Streamlit app Dockerfile
+      dockerfile: ./Dockerfile.Streamlit    #Name of your Streamlit app Dockerfile
+    ports:
+      - "8501:8501"             #Expose Streamlit port
+    #volumes:
+     # - ./StreamlitApp:/app     #Mount the local Streamlit app directory as a volume in the container
+    networks:
+      - backend-network         #Attach the container to a custom network for communication
+    
+  fastapi:
+    build:
+      context: .                            #Path to the directory containing your FastAPI backend Dockerfile
+      dockerfile: ./Dockerfile.EndPoints    #Name of your FastAPI backend Dockerfile
+    ports:
+      - "8000:8000"                         #Expose FastAPI port
+   # volumes:
+    #  - ./BackEndAPIs:/app                  #Mount the local FastAPI app directory as a volume in the container
+    networks:
+      - backend-network                     #Attach the container to a custom network for communication
+
+networks:
+  backend-network:
+    driver: bridge                         #Define a custom bridge network for communication between containers
